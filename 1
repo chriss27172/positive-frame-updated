@@ -1,0 +1,188 @@
+/*
+Frame 2.0 with random motivational quote
+React + Next.js (App Router) + Tailwind CSS
+Author: music-guy.eth
+*/
+
+// app/page.tsx
+import { getRandomQuote } from './utils/quotes';
+
+export const runtime = 'edge';
+
+export const metadata = {
+  title: 'Positive Frame 🌈 by music-guy.eth',
+  description: 'Feel-good random motivation quote',
+  openGraph: {
+    title: 'Positive Frame 🌈 by music-guy.eth',
+    images: [`/og?ts=${Date.now()}`],
+  },
+  other: {
+    'fc:frame': 'vNext',
+    'fc:frame:image': `/og?ts=${Date.now()}`,
+    'fc:frame:post_url': 'https://your-domain.vercel.app',
+    'fc:frame:button:1': 'Share this',
+    'fc:frame:author': 'music-guy.eth'
+  },
+};
+
+export default function Home() {
+  const quote = getRandomQuote();
+  return (
+    <main className="flex flex-col items-center justify-center min-h-screen bg-white p-8">
+      <div className="text-center text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-yellow-400 to-blue-500">
+        {quote}
+      </div>
+      <div className="mt-4 text-sm text-gray-500">Created by music-guy.eth</div>
+    </main>
+  );
+}
+
+// app/utils/quotes.ts
+export const quotes = [
+  "Keep going. You're doing better than you think.",
+  "You are enough, exactly as you are.",
+  "Trust the timing of your life.",
+  "Every step counts, no matter how small.",
+  "You are growing through what you are going through.",
+  "Mistakes mean you are trying.",
+  "The best is yet to come.",
+  "You are capable of amazing things.",
+  "Progress, not perfection.",
+  "Breathe. You’ve got this.",
+  "Your energy is your power.",
+  "Let go of what you can’t control.",
+  "Believe in your magic.",
+  "You are not alone.",
+  "Keep your heart soft, even when it’s hard.",
+  "You bring light into the world.",
+  "Healing is not linear.",
+  "You matter more than you know.",
+  "Joy is a form of resistance.",
+  "Choose love over fear.",
+  "You are a walking miracle.",
+  "Start where you are. Use what you have. Do what you can.",
+  "Don’t give up just yet.",
+  "Your voice matters.",
+  "You can be both soft and strong.",
+  "Rest is productive.",
+  "You’re doing your best and that’s enough.",
+  "Shine your light.",
+  "One breath at a time.",
+  "You are safe here.",
+  "The world needs your light.",
+  "You are stronger than your doubt.",
+  "Your presence is powerful.",
+  "Small wins are still wins.",
+  "You are not behind. You’re on your path.",
+  "You are worthy of love and peace.",
+  "Celebrate yourself today.",
+  "Keep your hope alive.",
+  "Brighter days are coming.",
+  "You’re allowed to take up space.",
+  "Be proud of how far you’ve come.",
+  "You can always begin again.",
+  "What you do matters.",
+  "You are the sky. Everything else is just weather.",
+  "Be kind to yourself.",
+  "The universe is rooting for you.",
+  "You were made for this moment.",
+  "Light always returns.",
+  "Show up for yourself.",
+  "You’re not a burden.",
+  "You belong here.",
+  "Choose joy, every time.",
+  "Don’t shrink your light.",
+  "It’s okay to rest.",
+  "Your dreams are valid.",
+  "You are becoming who you're meant to be.",
+  "Your story isn’t over.",
+  "Feel it. Heal it. Release it.",
+  "You are the rainbow after the storm.",
+  "Love yourself through it all."
+];
+
+export function getRandomQuote() {
+  const index = Math.floor(Math.random() * quotes.length);
+  return quotes[index];
+}
+
+// app/og/route.tsx
+import { ImageResponse } from 'next/og';
+import { getRandomQuote } from '../utils/quotes';
+
+export const runtime = 'edge';
+export const alt = 'Motivational Frame Image';
+export const contentType = 'image/png';
+
+export default async function OG() {
+  const quote = getRandomQuote();
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          fontSize: 48,
+          background: 'white',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '40px',
+          color: 'black',
+        }}
+      >
+        <div
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, #ec4899, #facc15, #3b82f6)',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
+            textAlign: 'center',
+            fontWeight: 'bold',
+          }}
+        >
+          {quote}
+        </div>
+      </div>
+    ),
+    {
+      width: 1200,
+      height: 630,
+    }
+  );
+}
+
+// tailwind.config.ts
+import type { Config } from 'tailwindcss';
+const config: Config = {
+  content: ['./app/**/*.{ts,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+export default config;
+
+// vercel.json (optional, for clean routing)
+{
+  "rewrites": [
+    { "source": "/", "destination": "/" },
+    { "source": "/og", "destination": "/og" }
+  ]
+}
+
+// package.json (important parts)
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "^3.4.0"
+  }
+}
